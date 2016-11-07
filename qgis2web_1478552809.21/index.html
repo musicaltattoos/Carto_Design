@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css" />
+        <link rel="stylesheet" type="text/css" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/label.css" />
+        <link rel="stylesheet" href="css/MarkerCluster.css" />
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+        <script src="js/leaflet.js"></script>
+        <script src="js/OSMBuildings-Leaflet.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/label.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Migration</title>
+    </head>
+    <style>
+        h1{ font-weight:bold font-size: 28px; color: black;
+		}
+        h2{ font-size: 20px; color:black;
+        }
+    </style>
+    <body>
+        <center>
+        <h1>Bell County Migration 2009-2013</h1>
+        <h2>By Jess Bradley</h2>
+        </center>
+        <div id="map">
+        </div>
+        <script src="data/json_Migration0.js"></script>
+        <script src="data/json_BellCounty1.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+            highlightLayer.openPopup();
+        }
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:14, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        var feature_group = new L.featureGroup([]);
+        var bounds_group = new L.featureGroup([]);
+        var raster_group = new L.LayerGroup([]);
+        var basemap0 = L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>,<a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Mapdata: &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            maxZoom: 14
+        });
+        basemap0.addTo(map);
+        var initialOrder = new Array();
+        var layerOrder = new Array();
+        function stackLayers() {
+            for (index = 0; index < initialOrder.length; index++) {
+                map.removeLayer(initialOrder[index]);
+                map.addLayer(initialOrder[index]);
+            }
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        function restackLayers() {
+            for (index = 0; index < layerOrder.length; index++) {
+                layerOrder[index].bringToFront();
+            }
+        }
+        layerControl = L.control.layers({},{},{collapsed:false});
+        function pop_Migration0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table><tr><td colspan="2"><strong>NAMELSAD</strong><br />' + (feature.properties['NAMELSAD'] !== null ? Autolinker.link(String(feature.properties['NAMELSAD'])) : '') + '</td></tr><tr><td colspan="2"><strong>Migrate</strong><br />' + (feature.properties['Migrate'] !== null ? Autolinker.link(String(feature.properties['Migrate'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleMigration0(feature) {
+        if (feature.properties['Migrate'] >= -158.0 &&
+                feature.properties['Migrate'] <= -17.0) {
+
+            return {
+                color: '#000000',
+                weight: '1.04',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                fillColor: '#a6611a',
+                opacity: '1.0',
+                fillOpacity: '1.0',
+            }
+        }
+        if (feature.properties['Migrate'] >= -17.0 &&
+                feature.properties['Migrate'] <= -4.8) {
+
+            return {
+                color: '#000000',
+                weight: '1.04',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                fillColor: '#dfc27d',
+                opacity: '1.0',
+                fillOpacity: '1.0',
+            }
+        }
+        if (feature.properties['Migrate'] >= -4.8 &&
+                feature.properties['Migrate'] <= 2.0) {
+
+            return {
+                color: '#000000',
+                weight: '1.04',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                fillColor: '#f5f5f5',
+                opacity: '1.0',
+                fillOpacity: '1.0',
+            }
+        }
+        if (feature.properties['Migrate'] >= 2.0 &&
+                feature.properties['Migrate'] <= 10.0) {
+
+            return {
+                color: '#000000',
+                weight: '1.04',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                fillColor: '#80cdc1',
+                opacity: '1.0',
+                fillOpacity: '1.0',
+            }
+        }
+        if (feature.properties['Migrate'] >= 10.0 &&
+                feature.properties['Migrate'] <= 39.0) {
+
+            return {
+                color: '#000000',
+                weight: '1.04',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                fillColor: '#018571',
+                opacity: '1.0',
+                fillOpacity: '1.0',
+            }
+        }
+        }
+        var json_Migration0JSON = new L.geoJson(json_Migration0, {
+            onEachFeature: pop_Migration0,
+            style: doStyleMigration0
+        });
+        layerOrder[layerOrder.length] = json_Migration0JSON;
+        bounds_group.addLayer(json_Migration0JSON);
+        initialOrder[initialOrder.length] = json_Migration0JSON;
+        feature_group.addLayer(json_Migration0JSON);
+        function pop_BellCounty1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table><tr><th scope="row">NAMELSAD</th><td>' + (feature.properties['NAMELSAD'] !== null ? Autolinker.link(String(feature.properties['NAMELSAD'])) : '') + '</td></tr></table>';
+            layer.bindPopup(popupContent);
+        }
+
+        function doStyleBellCounty1(feature) {
+            return {
+                weight: 1.04,
+                color: '#ffffff',
+                fillColor: '#252525',
+                dashArray: '10,5',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                opacity: 1.0,
+                fillOpacity: 1.0
+            };
+        }
+        var json_BellCounty1JSON = new L.geoJson(json_BellCounty1, {
+            onEachFeature: pop_BellCounty1,
+            style: doStyleBellCounty1
+        });
+        layerOrder[layerOrder.length] = json_BellCounty1JSON;
+        bounds_group.addLayer(json_BellCounty1JSON);
+        initialOrder[initialOrder.length] = json_BellCounty1JSON;
+        feature_group.addLayer(json_BellCounty1JSON);
+        raster_group.addTo(map);
+        feature_group.addTo(map);
+        var baseMaps = {'Stamen Toner': basemap0};
+        L.control.layers(baseMaps,{'<img src="legend/BellCounty1.png" /> Bell County': json_BellCounty1JSON,'Migration<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/Migration0_MassOutMigrate.png" /> Mass Out-Migrate <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/Migration0_OutMigrate.png" /> Out-Migrate<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/Migration0_NoMigration.png" /> No Migration<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/Migration0_InMigrate.png" /> In-Migrate<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="legend/Migration0_MassInMigrate.png" /> Mass In-Migrate<br />': json_Migration0JSON,},{collapsed:false}).addTo(map);
+        stackLayers();
+        map.on('overlayadd', restackLayers);
+        </script>
+    </body>
+</html>
